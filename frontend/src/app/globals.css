@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  margin: 0;
+  background: #f6f8fb;
+  color: #101319;
+}
+
+.container-page {
+  width: min(1180px, calc(100% - 32px));
+  margin-inline: auto;
+}
+
+.focus-ring {
+  @apply focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2;
+}
