@@ -1,17 +1,17 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { FiHeart, FiShoppingCart, FiStar } from "react-icons/fi";
 import { useCart } from "@/context/CartContext";
 
 export default function ProductCard({ product }) {
   const { addToCart } = useCart();
+  const imageSrc = product.images?.[0]?.url || product.images?.[0] || "/placeholder.png";
 
   return (
     <article className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-soft">
       <Link href={`/product/${product._id}`} className="relative block aspect-[4/3] bg-slate-100">
-        <Image src={product.images?.[0] || "/placeholder.png"} alt={product.title} fill className="object-cover" sizes="(max-width: 768px) 100vw, 25vw" />
+        <img src={imageSrc} alt={product.title} className="h-full w-full object-cover" />
       </Link>
       <div className="p-4">
         <div className="flex items-center justify-between gap-3 text-xs font-semibold uppercase text-slate-500">

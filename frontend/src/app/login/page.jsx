@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { api } from "@/lib/api";
 
 export default function LoginPage() {
   const [message, setMessage] = useState("");
+  const router = useRouter();
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -14,6 +16,9 @@ export default function LoginPage() {
       const { data } = await api.post("/auth/login", Object.fromEntries(form));
       localStorage.setItem("gemini_token", data.token);
       setMessage("Connexion reussie.");
+      const redirectTo = new URLSearchParams(window.location.search).get("redirect");
+      const safeRedirect = redirectTo?.startsWith("/") ? redirectTo : null;
+      router.replace(safeRedirect || (data.user?.role === "admin" ? "/admin" : "/"));
     } catch {
       setMessage("Connexion impossible. Verifiez vos identifiants.");
     }

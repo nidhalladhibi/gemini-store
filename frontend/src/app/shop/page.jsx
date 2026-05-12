@@ -1,19 +1,34 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import ProductCard from "@/components/ProductCard";
-import { categories, demoProducts } from "@/lib/data";
+import { categories } from "@/lib/data";
+import { api } from "@/lib/api";
 
 export default function ShopPage() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("Tous");
+  const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const products = useMemo(() => {
-    return demoProducts.filter((product) => {
-      const matchesQuery = product.title.toLowerCase().includes(query.toLowerCase());
-      const matchesCategory = category === "Tous" || product.category === category;
-      return matchesQuery && matchesCategory;
-    });
+  useEffect(() => {
+    const search = new URLSearchParams(window.location.search).get("search");
+    if (search) setQuery(search);
+  }, []);
+
+  useEffect(() => {
+    const params = {};
+    if (query.trim()) params.search = query.trim();
+    if (category !== "Tous") params.category = category;
+
+    setIsLoading(true);
+    setError("");
+
+    api.get("/products", { params })
+      .then(({ data }) => setProducts(data))
+      .catch(() => setError("Impossible de charger les produits."))
+      .finally(() => setIsLoading(false));
   }, [query, category]);
 
   return (
@@ -29,9 +44,14 @@ export default function ShopPage() {
           {categories.map((item) => <option key={item.name}>{item.name}</option>)}
         </select>
       </div>
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        {products.map((product) => <ProductCard key={product._id} product={product} />)}
-      </div>
+      {error && <p className="rounded-lg bg-red-50 p-4 text-center font-semibold text-red-600">{error}</p>}
+      {isLoading && <p className="p-10 text-center text-slate-600">Chargement des produits...</p>}
+      {!isLoading && !error && products.length === 0 && <p className="p-10 text-center text-slate-600">Aucun produit trouve.</p>}
+      {!isLoading && !error && products.length > 0 && (
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {products.map((product) => <ProductCard key={product._id} product={product} />)}
+        </div>
+      )}
     </section>
   );
 }
