@@ -15,10 +15,13 @@ export default function LoginPage() {
     try {
       const { data } = await api.post("/auth/login", Object.fromEntries(form));
       localStorage.setItem("gemini_token", data.token);
+      document.cookie = `gemini_token=${data.token}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax`;
       setMessage("Connexion reussie.");
       const redirectTo = new URLSearchParams(window.location.search).get("redirect");
       const safeRedirect = redirectTo?.startsWith("/") ? redirectTo : null;
-      router.replace(safeRedirect || (data.user?.role === "admin" ? "/admin" : "/"));
+      const isAdmin = data.user?.role === "admin";
+      const destination = safeRedirect === "/admin" && !isAdmin ? "/" : safeRedirect;
+      router.replace(destination || (isAdmin ? "/admin" : "/"));
     } catch {
       setMessage("Connexion impossible. Verifiez vos identifiants.");
     }

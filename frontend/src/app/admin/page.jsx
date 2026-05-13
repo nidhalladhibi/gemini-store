@@ -75,6 +75,7 @@ export default function AdminPage() {
       })
       .catch(() => {
         localStorage.removeItem("gemini_token");
+        document.cookie = "gemini_token=; path=/; max-age=0; SameSite=Lax";
         router.replace("/login?redirect=/admin");
       });
   }, [router]);

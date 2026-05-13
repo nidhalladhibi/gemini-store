@@ -15,7 +15,7 @@ const productSchema = new mongoose.Schema(
     title: { type: String, required: true, trim: true },
     description: { type: String, required: true },
     price: { type: Number, required: true, min: 0 },
-    category: { type: String, required: true, enum: ["Smartphones", "Laptops", "PC Gamer", "Accessoires"] },
+    category: { type: String, required: true, enum: ["Smartphones", "Laptops", "Gaming", "Accessoires"] },
     brand: { type: String, trim: true },
     stock: { type: Number, required: true, min: 0, default: 0 },
     images: [{ url: String, publicId: String }],

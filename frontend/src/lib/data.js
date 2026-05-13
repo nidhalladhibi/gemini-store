@@ -1,7 +1,7 @@
 export const categories = [
   { name: "Smartphones", detail: "Samsung, Apple, Xiaomi, Oppo, Huawei" },
   { name: "Laptops", detail: "HP, Dell, Lenovo, Asus, Acer" },
-  { name: "PC Gamer", detail: "Setups, laptops gaming, desktops, RGB" },
+  { name: "Gaming", detail: "Setups, laptops gaming, desktops, RGB" },
   { name: "Accessoires", detail: "Casques, souris, claviers, chargeurs" }
 ];
 

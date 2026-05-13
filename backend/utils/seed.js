@@ -42,7 +42,7 @@ const products = [
     title: "ASUS ROG Strix G16",
     description: "Laptop gaming puissant avec écran rapide, GPU dédié et refroidissement avancé.",
     price: 5699,
-    category: "PC Gamer",
+    category: "Gaming",
     brand: "Asus",
     stock: 5,
     isPopular: true,

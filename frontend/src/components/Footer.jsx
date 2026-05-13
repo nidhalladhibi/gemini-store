@@ -13,7 +13,7 @@ export default function Footer() {
           <div className="mt-3 grid gap-2 text-sm text-slate-300">
             <Link href="/shop">Smartphones</Link>
             <Link href="/shop">Laptops</Link>
-            <Link href="/shop">PC Gamer</Link>
+            <Link href="/shop">Gaming</Link>
             <Link href="/shop">Accessoires</Link>
           </div>
         </div>
