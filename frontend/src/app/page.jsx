@@ -14,7 +14,7 @@ import { categories, services } from "@/lib/data";
 const iconMap = {
   Smartphones: FiSmartphone,
   Laptops: FiMonitor,
-  "PC Gamer": FiCpu,
+  Gaming: FiCpu,
   Accessoires: FiTrendingUp
 };
 
@@ -43,6 +43,7 @@ export default function HomePage() {
 
   const sliderProducts = products.slice(0, 3);
   const popularProducts = products.filter(p => p.isPopular).slice(0, 4);
+  const getProductImage = (product) => product.images?.[0]?.url || product.images?.[0] || "/placeholder.png";
 
   if (loading) {
     return <div className="container-page py-20 text-center">Chargement des produits...</div>;
@@ -66,7 +67,7 @@ export default function HomePage() {
               <SwiperSlide key={product._id}>
                 <div className="relative min-h-[420px] overflow-hidden rounded-lg bg-slate-900">
                   <Image
-                    src={product.images?.[0]?.url || "/placeholder.png"}
+                    src={getProductImage(product)}
                     alt={product.title}
                     fill
                     className="object-cover opacity-75"
@@ -130,14 +131,7 @@ export default function HomePage() {
       </section>
 
       <section className="bg-white py-14">
-        <div className="container-page grid gap-5 md:grid-cols-3">
-          {["Service rapide et produits authentiques.", "Setup gaming complet livre en 48h.", "Notre site e-commerce a double les demandes."].map((quote, index) => (
-            <blockquote key={quote} className="rounded-lg border border-slate-200 p-6">
-              <p className="text-lg font-semibold">"{quote}"</p>
-              <footer className="mt-4 text-sm text-slate-500">Client Gemini {index + 1}</footer>
-            </blockquote>
-          ))}
-        </div>
+       
       </section>
     </>
   );
