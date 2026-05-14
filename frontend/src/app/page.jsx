@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { FiArrowRight, FiCpu, FiMonitor, FiSmartphone, FiTrendingUp } from "react-icons/fi";
 import { Autoplay, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -66,12 +65,10 @@ export default function HomePage() {
             {sliderProducts.map((product) => (
               <SwiperSlide key={product._id}>
                 <div className="relative min-h-[420px] overflow-hidden rounded-lg bg-slate-900">
-                  <Image
+                  <img
                     src={getProductImage(product)}
                     alt={product.title}
-                    fill
-                    className="object-cover opacity-75"
-                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="absolute inset-0 h-full w-full object-cover opacity-75"
                   />
                   <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 to-transparent p-6">
                     <p className="text-sm font-semibold text-cyan">{product.category}</p>
