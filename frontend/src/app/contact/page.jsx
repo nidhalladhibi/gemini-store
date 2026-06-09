@@ -109,7 +109,14 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <p className="font-semibold text-slate-700">Adresse</p>
-                    <p className="text-slate-500">Tunis, Tunisie</p>
+                    <a
+                      href="https://maps.app.goo.gl/ybaCZx62Cd3LTWcH8"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-slate-500 hover:text-brand underline underline-offset-2 transition-colors duration-200"
+                    >
+                      solimen, Borj Cédria
+                    </a>
                   </div>
                 </div>
               </div>
@@ -129,7 +136,7 @@ export default function ContactPage() {
                 </div>
                 <div className="flex justify-between">
                   <span>Dimanche</span>
-                  <span>10::00- 20:00</span>
+                  <span>10:00 - 20:00</span>
                 </div>
               </div>
             </div>

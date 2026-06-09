@@ -18,45 +18,64 @@ import { errorHandler, notFound } from "./middleware/errorMiddleware.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:3000";
 
-// Connexion à MongoDB
+// Connexion MongoDB
 connectDB();
 
 // Sécurité
 app.use(helmet());
 
-// CORS - corrigé pour utiliser CLIENT_URL du .env
-app.use(cors({ 
-  origin: CLIENT_URL, 
-  credentials: true 
-}));
+// ==================== CORS ====================
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://gemini-store-frontend.vercel.app",
+  "https://www.geministore.tn",
+  "https://geministore.tn",
+];
 
-// Body parsers
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error(`CORS non autorisé: ${origin}`));
+    },
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
+// ==================== BODY PARSER ====================
 app.use(express.json({ limit: "2mb" }));
 app.use(express.urlencoded({ extended: true }));
 
-// Logging
+// ==================== LOGS ====================
 app.use(morgan("dev"));
 
-// Rate limiting
-const limiter = rateLimit({ 
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  limit: 300, // 300 requêtes par IP
-  message: "Trop de requêtes, veuillez réessayer après 15 minutes"
+// ==================== RATE LIMIT ====================
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 300,
+  message: "Trop de requêtes, veuillez réessayer après 15 minutes",
 });
+
 app.use(limiter);
 
-// Routes de santé
-app.get("/api/health", (_req, res) => { 
-  res.json({ 
-    status: "ok", 
+// ==================== HEALTH CHECK ====================
+app.get("/api/health", (_req, res) => {
+  res.json({
+    status: "ok",
     service: "gemini-store-api",
-    environment: process.env.NODE_ENV || "development"
-  }); 
+    environment: process.env.NODE_ENV || "development",
+  });
 });
 
-// Routes API
+// ==================== ROUTES ====================
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
@@ -65,14 +84,13 @@ app.use("/api/services", serviceRoutes);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/payments", paymentRoutes);
 
-// Middleware d'erreur
+// ==================== ERRORS ====================
 app.use(notFound);
 app.use(errorHandler);
 
-// Démarrage du serveur
+// ==================== START SERVER ====================
 app.listen(PORT, () => {
-  console.log(`🚀 Serveur démarré avec succès !`);
-  console.log(`📡 API: http://localhost:${PORT}/api/health`);
-  console.log(`🌐 Client autorisé: ${CLIENT_URL}`);
-  console.log(`📦 Base de données: ${process.env.MONGO_URI ? "Connectée" : "Non configurée"}`);
+  console.log(`🚀 Serveur démarré sur le port ${PORT}`);
+  console.log(`🌐 Origins autorisés :`);
+  allowedOrigins.forEach((origin) => console.log(`   - ${origin}`));
 });
