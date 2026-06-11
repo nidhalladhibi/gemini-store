@@ -20,7 +20,7 @@ export default function ProductDetailsPage() {
   const [loading, setLoading] = useState(true);
 
   // Récupération du numéro WhatsApp depuis .env.local
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "+21600000000";
+  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "+21651679495";
 
   useEffect(() => {
     if (!params.id) return;
